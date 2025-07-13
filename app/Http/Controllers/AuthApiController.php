@@ -6,6 +6,7 @@ use App\Http\Resources\AdminLoginResource;
 use App\Services\AuthService;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -51,6 +52,17 @@ class AuthApiController extends Controller
             return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
         }
 
+    }
+
+    public function logout(Request $request)
+    {
+       try {
+            $request->user()->tokens()->delete();
+            
+            return response()->json(['status' => 'success', 'message' => 'Logout successful'], 200);
+       } catch (Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()], 500);
+       }
     }
 }
 

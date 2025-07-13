@@ -42,10 +42,32 @@ class EmployeeService
             'position' => $request->position,
             'image' => $request->image,
             'division_id' => $request->division
-        ])->save();
+        ]);
 
 
         return $employee;
     }
 
+    public function update($request, $id)
+    {
+        $employee = Employee::findOrFail($id);
+
+        $request = $this->saveImage($request, $employee);
+
+        $employee->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'position' => $request->position,
+            'division_id' => $request->division,
+            'image' => $request->image ?? $employee->image,
+        ]);
+
+        return $employee;
+    }
+
+    public function destroy($id)
+    {
+        $employee = Employee::findOrFail($id);
+        $employee->delete();
+    }
 }

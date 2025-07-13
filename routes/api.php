@@ -22,5 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/divisions', [DivisionController::class, 'index']);
 
     // employees
-    Route::resource('employees', EmployeeApiController::class);
+    Route::apiResource('employees', EmployeeApiController::class);
+
+    // logout
+    Route::post('/logout', [AuthApiController::class, 'logout']);
 });
