@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Resources\EmployeeResource;
+use App\Services\EmployeeService;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
+class EmployeeApiController extends Controller
+{
+    protected $employeeService;
+
+    public function __construct(EmployeeService $employeeService)
+    {
+        $this->employeeService = $employeeService;
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        try {
+            $employees = $this->employeeService->index($request->all());
+
+            return new EmployeeResource(
+                'success',
+                'Employees retrieved successfully',
+                $employees
+            );
+
+            // return response()->json([
+            //     'status' => 'success',
+            //     'message' => 'Employees retrieved successfully',
+            //     'data' => $employees,
+            // ], 200);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        try {
+            $this->validateCreateData($request);
+
+            $this->employeeService->store($request);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Employee created successfully',
+                // 'data' => $employee,
+            ], 201);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->errors(),
+            ], 422);
+        } catch (Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        //
+    }
+
+    private function validateCreateData(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'phone' => 'required|string|min:10',
+            'position' => 'required|string',
+            'division_id' => 'required|exists:divisions,id',
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
+        ], [
+            'name.required' => 'The name field is required.',
+            'phone.min' => 'The phone field must be at least 10 digits.',
+            'phone.required' => 'The phone field is required.',
+            'position.required' => 'The position field is required.',
+            'division_id.required' => 'The division field is required.',
+            'image.required' => 'The image field is required.',
+        ]);
+
+        // if($validator->fails()) {
+        //     throw new ValidationException($validator);
+        // }
+
+        return $validator->validated();
+    }
+}

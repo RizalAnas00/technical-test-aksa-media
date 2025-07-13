@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\EmployeeApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthApiController;
@@ -19,4 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // divisions
     Route::get('/divisions', [DivisionController::class, 'index']);
+
+    // employees
+    Route::resource('employees', EmployeeApiController::class);
 });

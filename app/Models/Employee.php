@@ -6,24 +6,21 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Division extends Model
+class Employee extends Model
 {
+
     use HasUuids, HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
+        'phone',
+        'position',
+        'division_id',
+        'image',
     ];
 
-    /**
-     * Get the employees for the division.
-     */
-    public function employees()
+    public function division()
     {
-        return $this->hasMany(Employee::class);
+        return $this->belongsTo(Division::class);
     }
 }

@@ -21,10 +21,6 @@ class DivisionService
             ->paginate($limit);
     }
 
-    public function create()
-    {
-        // Logic for creating a new Division
-    }
 
     public function store(Request $request)
     {
@@ -39,10 +35,6 @@ class DivisionService
         return $Division;
     }
 
-    public function edit(Division $Division)
-    {
-        // Logic for editing Division
-    }
 
     public function update(Request $request, Division $Division)
     {
