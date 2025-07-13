@@ -41,7 +41,7 @@ class EmployeeService
             'phone' => $request->phone,
             'position' => $request->position,
             'image' => $request->image,
-            'division_id' => $request->division_id
+            'division_id' => $request->division
         ])->save();
 
 

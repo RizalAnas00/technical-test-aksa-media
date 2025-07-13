@@ -104,14 +104,14 @@ class EmployeeApiController extends Controller
             'name' => 'required|string',
             'phone' => 'required|string|min:10',
             'position' => 'required|string',
-            'division_id' => 'required|exists:divisions,id',
+            'division' => 'required|exists:divisions,id',
             'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
         ], [
             'name.required' => 'The name field is required.',
             'phone.min' => 'The phone field must be at least 10 digits.',
             'phone.required' => 'The phone field is required.',
             'position.required' => 'The position field is required.',
-            'division_id.required' => 'The division field is required.',
+            'division.required' => 'The division field is required.',
             'image.required' => 'The image field is required.',
         ]);
 
