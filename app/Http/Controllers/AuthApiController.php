@@ -8,7 +8,6 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class AuthApiController extends Controller
 {
@@ -22,6 +21,13 @@ class AuthApiController extends Controller
     public function login(Request $request)
     {
         try {
+            if (Auth::guard('sanctum')->user()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'You are already authenticated',
+                ], 403);
+            }
+
             $credentials = $request->only('username', 'password');
 
             $validator = Validator::make($credentials, [
